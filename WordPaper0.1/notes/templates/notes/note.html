@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WordPaper</title>
+    <link rel="shortcut icon" href="/static/img/logo.png">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/note.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/gh.css" />
+    <!-- Java Script -->
+    <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav id="globalheader" class="globalheader" role="navigation" aria-label="Global Navigation">
+        <div id="gh-content" class="gh-content">
+            <ul class="gh-nav-list navbar-nav">
+                <li class="gh-tab gh-tab-logo">
+                    <a href="/" class="gh-tab-link">
+                        <div class="gh-logo"><img src="/static/img/WordLogo.png" alt="35x35" class="img-rounded" style="width: 35px;height: 35px;"></div>
+                    </a>
+                </li>
+                <li class="gh-tab gh-tab-note">
+                    <a href="#" class="gh-tab-link active-link">Note</a>
+                </li>
+                <li class="gh-tab gh-tab-test">
+                    <a href="#" class="gh-tab-link">Test</a>
+                </li>
+                <li class="gh-tab gh-tab-review">
+                    <a href="#" class="gh-tab-link">Review</a>
+                </li>
+                <li class="gh-tab gh-tab-help">
+                    <a href="#" class="gh-tab-link">Help</a>
+                </li>
+                <li class="gh-tab gh-tab-person">
+	                <div id="menu" class="dropdown">
+	                    <a href="javascript:void(0)" class="gh-tab-link" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" id="person-menu-trigger"><span class="glyphicon glyphicon-user"></span></a>
+                    	<ul id="menu-items" class="dropdown-menu" role="menu" aria-labelledby="person-menu-trigger">
+                    		<li class="menu-item"><a class="item" href="javascript:void(0)"><span class="glyphicon glyphicon-cog"></span> Personal Settings </a></li>
+                    		<li class="menu-item"><a class="item" href="/accounts/logout"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
+                    	</ul>
+	                </div><!--div#menu -->
+                </li>
+            </ul> <!-- ul.gh-nav-list -->
+        </div> <!-- div#gh-content -->
+    </nav> <!-- nav#globalheader -->
+
+    <div id="container">
+    	<!--div id="background-image"></div-->
+    	<div class="hint-infos">
+    		<div id="day-word">
+    			<div class="day-title">Word of The Day</div>
+    			<div id="words">
+    				<a href="javascript:void(0)" class="dayword" data-toggle="tooltip" data-placement="right" title="holder"></a>
+    			</div>
+    		</div>
+    		<div id="total-words">
+    			<div class="total-title">Total Words</div>
+    			<div id="total"></div>
+    		</div>
+    	</div> <!--div.hint-infos -->
+    	<div id="note-area">
+    	<div class="alert alert-warning hide" id='added-hint' role="alert"></div>
+    		<div class="word-mean">
+	    		<input type="text" class="input-word-mean form-control" id="word" placeholder="Word"/>
+	    		<input type="text" class="input-word-mean form-control" id="mean" placeholder="Mean"/>
+    		</div>
+    		<div class="explanation">
+    			<input type="text" class="input-explanation form-control" id="explanation" placeholder="Explanation" />
+    		</div>
+    		<div class="add-button">
+    			<button class="btn-add" type="button" id="add-word"><span class="glyphicon glyphicon-plus"></span></button>
+    		</div>
+    	</div><!-- div#note-area -->
+    	<div id="noted-words">
+    	
+    </div><!-- div#noted-words -->
+    </div> <!-- div#container -->
+    <div id="word-card" class="modal fade" role="dialog">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <h3 class="modal-title" id="card-word">Enlight</h3>
+    			</div><!-- div.modal-header -->
+    			<div class="modal-body">
+    			<div id="card-mean">亮了</div>
+    				<div id="card-explanation" >enlighting something hahaha</div>
+    			</div><!-- div.modal-body -->
+    			<div class="modal-footer">
+    				
+    			</div><!-- div.modal-footer -->
+    		</div>
+    	</div>
+    </div><!-- div#word-card -->
+    <!-- JavaScript Code -->
+    <script type="text/javascript">
+    //global values
+    window.wordCount = {{count}};
+    window.offset = 0;
+    window.isNotedOdd = false;
+    </script>
+    <script type="text/javascript">
+    function getWordOfDay () {
+    	$.ajax({
+    		url: '/home/dayWord',
+    		type: 'GET',
+    		dataType: 'JSON',
+    		success:function(result){
+    			setDayWord(result);
+    		}
+    	});
+    	
+    }
+    </script>
+    <script type="text/javascript">
+    function setDayWord (result) {
+    	$('#words').find('a').attr('title', result['explanation']);
+    	$('#words').find('a').attr('data-original-title', result['explanation']);
+    	$('#words').find('a').html(result['origin'])
+    }
+    </script>
+    <script type="text/javascript">
+    function getWords () {
+    	$.ajax({
+    		url:'/home/getWords?offset=' + window.offset,
+    		type:'GET',
+    		dataType: 'JSON',
+    		success: function(result){
+    			addWords(result);
+    		}
+    	})
+    }
+    </script>
+    <script type="text/javascript">
+    function addWords (result) {
+    	words = result['words']
+    	if (words.length == 0){
+    		return
+    	}
+    	var newRow = document.createElement("row")
+    	var flag = 0;
+
+    	for (var i = 0; i < words.length; i++){
+    		newRow.innerHTML += getWordHTML(words[i]['origin'], words[i]['mean'], words[i]['explanation'])
+    		flag = 0
+    	}
+    	$('div#noted-words').append(newRow)
+    }
+    </script>
+    <script type="text/javascript">
+    function getWordHTML (origin, mean, explanation) {
+    	return 	'<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">'+
+    			'<div class="word-pad">'+
+    			'<button class="noteword" id="'+origin+'" onclick=javascript:showWordCard(this) ' +
+		    	'data-toggle="tooltip" mean="'+mean+'" data-placement="right" ' +
+		    	'explanation="'+explanation+'" title="'+explanation+'">'+origin+'</button>' +
+		    	'</div> </div>'
+    }
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+    	getWordOfDay();
+    	getWords();
+    	$('[data-toggle="tooltip"]').tooltip()
+    	$('div#total').html(window.wordCount)
+    });
+    </script>
+	<script type="text/javascript">
+	</script>
+	<script type="text/javascript">
+	$('#person-menu-trigger').click(function() {
+            var isVisible = $('#menu-list').is(':visible');
+            if ( !isVisible ) {
+                $('#menu-list').slideDown(36);
+            } else {
+                $('#menu-list').slideUp(36);
+            }
+        });
+    </script>
+    <script type="text/javascript">
+    $('#container').delegate('#add-word', 'click', function(){
+			var	origin      = $('#word').val(),
+				mean        = $('#mean').val(),
+				explanation = $('#explanation').val();
+				saveNewWord(origin, mean, explanation);
+
+    });
+    </script>
+    <script type="text/javascript">
+    function saveNewWord (origin, mean, explanation) {
+    	postData = {
+    		'origin': origin,
+    		'mean': mean,
+    		'explanation': explanation
+    	}
+    	$.ajax({
+    		url: '/home/addWord',
+    		type: 'POST',
+    		dataType: 'JSON',
+    		data: postData,
+    		success: function(result){
+    			processAddWordResult(result);
+    		}
+    	});
+    }
+    </script>
+    <script type="text/javascript">
+    function processAddWordResult (result) {
+    	$('#added-hint').removeClass('hide')
+    	$('#word').val('')
+    	$('#mean').val('')
+    	$('#explanation').val('')
+    	if(result['isExists']){
+    		$("#added-hint").html("Word already exists").show(300).delay(1000).hide(300);  
+    	}else{
+    		$("#added-hint").html("Add successfully!").show(300).delay(1000).hide(300);  
+    	}
+    }
+    </script>
+    <script type="text/javascript">
+     function showWordCard (buttonObj) {
+    	var origin = $(buttonObj).attr('id'),
+    	mean = $(buttonObj).attr('mean'),
+    	explanation = $(buttonObj).attr('explanation');
+    	$('div#word-card #card-word').html(origin)
+    	$('div#word-card #card-mean').html(mean)
+    	$('div#word-card #card-explanation').html(explanation)
+    	$('div#word-card').modal('show');
+    }
+    </script>
+</body>
+</html>

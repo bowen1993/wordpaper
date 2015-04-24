@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WordPaper</title>
+    <link rel="shortcut icon" href="/static/img/logo.png">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/gh.css" />
+    <!-- Java Script -->
+    <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <nav id="globalheader" class="globalheader" role="navigation" aria-label="Global Navigation">
+        <div id="gh-content" class="gh-content">
+            <ul class="gh-nav-list navbar-nav">
+                <li class="gh-tab gh-tab-logo">
+                    <a href="/" class="gh-tab-link">
+                        <div class="gh-logo"><img src="/static/img/WordLogo.png" alt="35x35" class="img-rounded" style="width: 35px;height: 35px;"></div>
+                    </a>
+                </li>
+                <li class="gh-tab gh-tab-note">
+                    <a href="#" class="gh-tab-link">Note</a>
+                </li>
+                <li class="gh-tab gh-tab-test">
+                    <a href="#" class="gh-tab-link">Test</a>
+                </li>
+                <li class="gh-tab gh-tab-review">
+                    <a href="#" class="gh-tab-link">Review</a>
+                </li>
+                <li class="gh-tab gh-tab-help">
+                    <a href="#" class="gh-tab-link">Help</a>
+                </li>
+                <li class="gh-tab gh-tab-person">
+                    <a href="javascript:void(0)" class="gh-tab-link"><span class="glyphicon glyphicon-user"></span></a>
+                </li>
+            </ul> <!-- ul.gh-nav-list -->
+        </div> <!-- div#gh-content -->
+    </nav> <!-- nav#globalheader -->
+    <div id="container">
+    <!--
+        <div id="background"><img src="/static/img/login_background.jpg" alt="background" class="img-responsive" id="background-image"></div>
+        -->
+        <div id="background-image"></div>
+        <div id="slogn">
+            <div class="slogn-text">Only Word Matters</div>
+        </div><!-- div#background-image -->
+
+        <div id="button">
+            <a href="javascript:void(0)" class="btn-action" id="register-action">Register</a>
+            <a href="javascript:void(0)" class="btn-action" id="login-action">Login</a>
+        </div> <!-- div#button -->
+    </div> <!-- div#container -->
+    <div class="modal fade" id="login-window" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <img src="/static/img/WordLogo_grey.png" alt="140x140" class="img-rounded hidden-xs hidden-sm" style="width: 140px;height: 140px;" />
+                    <h3 class="modal-title background-invisible" id="login-title">Log into WordPaper</h3>
+                </div> <!-- div.modal-header -->
+                <div class="modal-body">
+                <div class="alert alert-danger hide" id="login-alert" role="alert">
+                    Invalid username or password
+                </div>
+                <row>
+                    <div class="input-group input-group-lg login-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
+                        <input type="text" id="username-field" class="form-control" placeholder="Username"  />
+                    </div>
+                    <div class="input-group input-group-lg login-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
+                        <input type="password" id="password-field" class="form-control" placeholder="password" />
+                    </div>
+                </row>
+                </div><!-- div.modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel cancel-button" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn ok-button" id="login-button">OK</button>
+                </div>
+            </div> <!-- div.modal-content -->
+        </div> <!--div.modal-dialog -->
+    </div><!--div#login-window -->
+    <div class="modal fade" id="register-window" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <img src="/static/img/WordLogo_dark.png" alt="40x40" class="img-rounded" style="width: 40px;height: 40px;" />
+                    <h3 class="modal-title" id="register-title">Create Account</h3>
+                </div> <!-- div.modal-header -->
+                <div class="modal-body">
+                <div class="alert alert-danger hide" id="register-alert" role="alert">
+                    Invalid username or password
+                </div>
+                    <row>
+                        <div class="input-group input-group-lg register-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
+                            <input type="text" id="register-username-field" class="form-control register-input" placeholder="Username"  />
+                        </div>
+                        <div class="input-group input-group-lg register-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
+                            <input type="password" id="register-password-field" class="form-control register-input" placeholder="Password"  />
+                        </div>
+                        <div class="input-group input-group-lg register-input col-lg-10 col-md-10 col-sm-7 col-xs-7">
+                            <input type="password" id="confirm-password-field" class="form-control register-input" placeholder="Confirm Password"  />
+                        </div>
+                    </row>
+                </div> <!-- div.modal-body -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel cancel-button" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn ok-button" id="register-button">OK</button>
+                </div>
+            </div><!-- div.modal-content -->
+        </div><!-- div.modal-dialog -->s
+    </div> <!-- div#register-window -->
+
+<!-- script -->
+<script type="text/javascript">
+    $('#login-action').click(function(){
+        $('div#login-window').modal('show');
+        $('#login-alert').addClass('hide');
+    })
+</script>
+<script type="text/javascript">
+    $('#register-action').click(function(){
+        $('div#register-window').modal('show');
+        $('#register-alert').addClass('hide');
+    });
+</script>
+<script type="text/javascript">
+    jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+        this.each(function() {
+            $(this).css({
+                position: "relative"
+            });
+            for (var x = 1; x <= intShakes; x++) {
+                $(this).animate({
+                    left: (intDistance * -1)
+                }, (((intDuration / intShakes) / 4))).animate({
+                    left: intDistance
+                }, ((intDuration / intShakes) / 2)).animate({
+                    left: 0
+                }, (((intDuration / intShakes) / 4)));
+            }
+        });
+        return this;
+    };
+</script>
+<script type="text/javascript">
+    $('#login-window').delegate('.modal-footer #login-button', 'click', function(){
+        $('#login-alert').addClass('hide');
+        var username = $('#username-field').val(),
+            password = $('#password-field').val()
+        doLogin(username, password);
+    });
+</script>
+<script type="text/javascript">
+    function doLogin (username, password) {
+        var postData = {
+            'username': username,
+            'password': password
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/accounts/login',
+            data: postData,
+            dataType: 'JSON',
+            success: function(result){
+                processLoginResult(result);
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    function processLoginResult (result) {
+        if( result['isSuccessful']){
+            window.location.href="/home/dashboard"
+        } else{
+            $('#password-field').val('')
+            $('.modal-dialog').shake(4, 40, 300)
+            $('#login-alert').removeClass('hide');
+        }
+    }
+</script>
+<script type="text/javascript">
+    $('#register-window').delegate('.modal-footer #register-button', 'click', function(){
+        $('#register-alert').addClass('hide');
+        var username = $('#register-username-field').val()
+            password = $('#register-password-field').val()
+            repassword = $('#confirm-password-field').val()
+        if (username.length == 0 || password.length == 0 ||repassword.length == 0){
+            $('#register-alert').removeClass('hide');
+            $('.modal-dialog').shake(4, 40, 300)
+        }
+        else{
+            doRegister(username, password, repassword)
+        }
+    });
+</script>
+<script type="text/javascript">
+    function doRegister (username, password, repassword) {
+        var postData = {
+            'username': username,
+            'password': password,
+            'repassword': repassword
+        }
+        $.ajax({
+            url: '/accounts/register',
+            type: 'POST',
+            data: postData,
+            dataType: 'json',
+            success: function(result){
+                processRegisterResult(result);
+            }
+        });
+        
+    }
+</script>
+<script type="text/javascript">
+    function processRegisterResult (result) {
+        if (result['isSuccessful']){
+            window.location.href="/home/dashboard"
+        }else{
+            $('#register-password-field').val('');
+            $('#confirm-password-field').val('');
+            $('#register-alert').removeClass('hide');
+            $('.modal-dialog').shake(4, 40, 300);
+        }
+    }
+</script>
+</body>
+</html>
