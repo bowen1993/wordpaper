@@ -1,6 +1,7 @@
 import json
 
 from notes.models import Word
+import random
 
 
 def saveNewWord(origin, mean, explanation, username):
@@ -47,21 +48,51 @@ def calWordLevel(word_obj):
   return new_level
 
 def getRandomWord():
-    newWord = Word.objects.order_by('?')[0]
+    newWord = Word.objects.filter(is_remembered=False).order_by('?')[0]
     result = {
         'origin': newWord.origin_word,
+        'mean': newWord.mean,
         'explanation' : newWord.explanation
     }
     return result
 
-def getWords(count,offset, username):
-    word_list = Word.objects.filter(user_id=username).order_by('id')[offset : offset+count]
+def getMeanTest():
+    newWord = Word.objects.order_by('?')[0:4]
+    correctAnswer = random.randint(0,3)
+    word_info_list = list()
+    for word_obj in newWord:
+        word_info = {
+            'origin': word_obj.origin_word,
+            'mean': word_obj.mean,
+            'explanation': word_obj.explanation
+        }
+        word_info_list.append(word_info)
+    result = {
+        'words': word_info_list,
+        'correct': correctAnswer
+    }
+    print len(word_info_list)
+    return result
+
+def setWordRemembered(origin):
+    try:
+        word_obj = Word.objects.get(origin_word=origin)
+        word_obj.is_remembered=True
+        word_obj.save()
+        return True
+    except:
+        return False
+
+def getWords(offset, username):
+    word_list = Word.objects.filter(user_id=username).order_by('id')
     word_info_list = list()
     for word_obj in word_list:
         word_info = {
             'origin': word_obj.origin_word,
             'mean': word_obj.mean,
-            'explanation': word_obj.explanation
+            'explanation': word_obj.explanation,
+            'level': word_obj.level,
+            'is_remembered': word_obj.is_remembered
         }
         word_info_list.append(word_info)
     result = {

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WordPaper</title>
+    <link rel="shortcut icon" href="/static/img/logo.png">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/test.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/gh.css" />
+    <!-- Java Script -->
+    <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav id="globalheader" class="globalheader" role="navigation" aria-label="Global Navigation">
+        <div id="gh-content" class="gh-content">
+            <ul class="gh-nav-list navbar-nav">
+                <li class="gh-tab gh-tab-logo">
+                    <a href="/" class="gh-tab-link">
+                        <div class="gh-logo"><img src="/static/img/WordLogo.png" alt="35x35" class="img-rounded" style="width: 35px;height: 35px;"></div>
+                    </a>
+                </li>
+                <li class="gh-tab gh-tab-note">
+                    <a href="/home/dashboard/" class="gh-tab-link">Note</a>
+                </li>
+                <li class="gh-tab gh-tab-test">
+                    <a href="#" class="gh-tab-link  active-link">Test</a>
+                </li>
+                <li class="gh-tab gh-tab-review">
+                    <a href="/home/review/" class="gh-tab-link">Review</a>
+                </li>
+                <li class="gh-tab gh-tab-help">
+                    <a href="#" class="gh-tab-link">Help</a>
+                </li>
+                <li class="gh-tab gh-tab-person">
+	                <div id="menu" class="dropdown">
+	                    <a href="javascript:void(0)" class="gh-tab-link" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" id="person-menu-trigger"><span class="glyphicon glyphicon-user"></span></a>
+                    	<ul id="menu-items" class="dropdown-menu" role="menu" aria-labelledby="person-menu-trigger">
+                    		<li class="menu-item"><a class="item" href="javascript:void(0)"><span class="glyphicon glyphicon-cog"></span> Personal Settings </a></li>
+                    		<li class="menu-item"><a class="item" href="/accounts/logout"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
+                    	</ul>
+	                </div><!--div#menu -->
+                </li>
+            </ul> <!-- ul.gh-nav-list -->
+        </div> <!-- div#gh-content -->
+    </nav> <!-- nav#globalheader -->
+    <div id="container">
+    	<div id="background-image"></div>
+    	<div id="button">
+    		<a href="javascript:void(0)" class="btn-action mean-test">Meaning</a>
+    		<a href="javascript:void(0)" class="btn-action spell-test">Spelling</a>
+    	</div>
+    </div>
+    <div class="modal fade" id="mean-window" role="dialog">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <h3 class="modal-title">Meaning Test</h3>
+    			</div>
+    			<div class="modal-body">
+    				<h2 class="origin-word"></h2>
+    				<div class="alert hide alert-success" id='answer-correct-hint' role="alert"></div>
+    				<div class="alert hide alert-danger" id='answer-wrong-hint' role="alert"></div>
+    				<div class="choice-area">
+	    				<a href="javascript:void(0)" id="0" class="mean-choice"></a>
+	    				<a href="javascript:void(0)" id="1" class="mean-choice"></a>
+	    				<a href="javascript:void(0)" id="2" class="mean-choice"></a>
+	    				<a href="javascript:void(0)" id="3" class="mean-choice"></a>
+    				</div>
+    			</div> <!-- div.modal-body -->
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-cancel cancel-button" data-dismiss="modal">Exit</button>
+                    <button type="button" class="btn ok-button" id="pass-mean-button">Pass</button>
+    			</div>
+    		</div> <!-- div.modal-content -->
+    	</div>
+    </div> <!-- div#mean-window -->
+    <div id="spell-window" class="modal fade" role="dialog">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+    				<h3 class="modal-title">Spelling Test</h3>
+    			</div>
+    			<div class="modal-body">
+    				<div class="spell-input">
+    					<input type="text" id="user-spell" placeholder="Spell the word" />
+    				</div>
+    				<div class="alert hide alert-success" id='spell-correct-hint' role="alert"></div>
+    				<div class="alert hide alert-danger" id='spell-wrong-hint' role="alert"></div>
+    				<div class="spell-base" id="spell-mean">
+    				</div>
+    				<div class="spell-base" id="spell-explanation">
+    				</div>
+    			</div>
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-cancel cancel-button" data-dismiss="modal">Exit</button>
+    				<button type="button" class="btn ok-button" id="pass-spell-button">Pass</button>
+    				<button type="button" class="btn ok-button" id="confirm-spell-button">OK</button>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+	
+</body>
+
+<script type="text/javascript">
+	window.choice_answer = 1;
+	window.spell_answer = 'omnipotent';
+	window.mean_answer = '';
+</script>
+<script type="text/javascript">
+	function getMeanTestWords () {
+		$.ajax({
+			url: '/home/meanTest',
+			type: 'GET',
+			dataType: 'JSON',
+			success:function(result){
+				processGetMeanWords(result);
+			}
+		});
+	}
+</script>
+<script type="text/javascript">
+function processGetMeanWords (result) {
+	window.choice_answer = result['correct'];
+	window.mean_answer = result['words'][window.choice_answer]['mean']
+	$('div#mean-window h2.origin-word').html(result['words'][window.choice_answer]['origin']);
+	$('div#mean-window a#0').html(result['words'][0]['mean']);
+	$('div#mean-window a#1').html(result['words'][1]['mean']);
+	$('div#mean-window a#2').html(result['words'][2]['mean']);
+	$('div#mean-window a#3').html(result['words'][3]['mean']);
+}
+</script>
+<script type="text/javascript">
+	function showNextMeanWord () {
+		getMeanTestWords()
+	}
+</script>
+<script type="text/javascript">
+	$('a.mean-test').click(function() {
+		getMeanTestWords();
+		$('div#mean-window').modal('show')
+	});
+</script>
+<script type="text/javascript">
+	function getSpellTestWord () {
+		$.ajax({
+			url: '/home/dayWord',
+			type: 'GET',
+			dataType: 'JSON',
+			success:function(result){
+				processGetSpellWord(result);
+			}
+		});
+	}
+</script>
+<script type="text/javascript">
+	function processGetSpellWord (result) {
+		window.spell_answer = result['origin'];
+		var mean = result['mean'],
+		explanation = result['explanation'];
+		$('div#spell-window div#spell-mean').html(mean);
+		$('div#spell-window div#spell-explanation').html(explanation);
+	}
+</script>
+<script type="text/javascript">
+	$('a.spell-test').click(function(event) {
+		getSpellTestWord();
+		$('div#spell-window').modal('show')
+	});
+</script>
+<script type="text/javascript">
+	function showNextSpellWord () {
+		getSpellTestWord()
+	}
+</script>
+<script type="text/javascript">
+	$('#pass-spell-button').click(function() {
+		$("#spell-wrong-hint").removeClass('hide');
+		$("#spell-wrong-hint").html("Hey, don't miss too much words!").show(300).delay(500).hide(300);
+			showNextSpellWord();
+	});
+</script>
+<script type="text/javascript">
+	$('#pass-mean-button').click(function(event) {
+		$("#answer-wrong-hint").removeClass('hide');
+			$("#answer-wrong-hint").html("Hey, dno't miss too much words").show(300).delay(500).hide(300);
+			showNextMeanWord();
+	});
+</script>
+<script type="text/javascript">
+	$('#confirm-spell-button').click(function(event) {
+		var user_input = $('input#user-spell').val();
+		$('input#user-spell').val('');
+		if (user_input == window.spell_answer){
+			$("#spell-correct-hint").removeClass('hide');
+			$("#spell-correct-hint").html("Correct!").show(300).delay(1000).hide(300);
+			showNextSpellWord();
+		}else{
+			$("#spell-wrong-hint").removeClass('hide');
+			$("#spell-wrong-hint").html("Wrong! Answer is " + window.spell_answer).show(300).delay(2000).hide(300);
+			showNextSpellWord();
+		}	
+	});
+</script>
+<script type="text/javascript">
+	$('a.mean-choice').click(function(event) {
+		if ($(this).attr('id') == window.choice_answer){
+			$("#answer-correct-hint").removeClass('hide');
+			$("#answer-correct-hint").html("Correct!").show(300).delay(1000).hide(300);
+			showNextMeanWord();
+		}else{
+			$("#answer-wrong-hint").removeClass('hide');
+			$("#answer-wrong-hint").html("Wrong!The correct answer is "+window.mean_answer).show(300).delay(2000).hide(300);
+			showNextMeanWord();
+		}
+	});
+</script>
+</html>

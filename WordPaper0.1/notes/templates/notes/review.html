@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WordPaper</title>
+    <link rel="shortcut icon" href="/static/img/logo.png">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/test.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/gh.css" />
+    <!-- Java Script -->
+    <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav id="globalheader" class="globalheader" role="navigation" aria-label="Global Navigation">
+        <div id="gh-content" class="gh-content">
+            <ul class="gh-nav-list navbar-nav">
+                <li class="gh-tab gh-tab-logo">
+                    <a href="/" class="gh-tab-link">
+                        <div class="gh-logo"><img src="/static/img/WordLogo.png" alt="35x35" class="img-rounded" style="width: 35px;height: 35px;"></div>
+                    </a>
+                </li>
+                <li class="gh-tab gh-tab-note">
+                    <a href="/home/dashboard/" class="gh-tab-link">Note</a>
+                </li>
+                <li class="gh-tab gh-tab-test">
+                    <a href="/home/test/" class="gh-tab-link">Test</a>
+                </li>
+                <li class="gh-tab gh-tab-review">
+                    <a href="#" class="gh-tab-link active-link">Review</a>
+                </li>
+                <li class="gh-tab gh-tab-help">
+                    <a href="#" class="gh-tab-link">Help</a>
+                </li>
+                <li class="gh-tab gh-tab-person">
+	                <div id="menu" class="dropdown">
+	                    <a href="javascript:void(0)" class="gh-tab-link" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" id="person-menu-trigger"><span class="glyphicon glyphicon-user"></span></a>
+                    	<ul id="menu-items" class="dropdown-menu" role="menu" aria-labelledby="person-menu-trigger">
+                    		<li class="menu-item"><a class="item" href="javascript:void(0)"><span class="glyphicon glyphicon-cog"></span> Personal Settings </a></li>
+                    		<li class="menu-item"><a class="item" href="/accounts/logout"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
+                    	</ul>
+	                </div><!--div#menu -->
+                </li>
+            </ul> <!-- ul.gh-nav-list -->
+        </div> <!-- div#gh-content -->
+    </nav> <!-- nav#globalheader -->
+    <div id="container">
+    	<div id="background-image"></div>
+    	<div id="button">
+    		<a href="javascript:void(0)" class="btn-action start-review">Start Review</a>
+    	</div>
+    </div>
+    <div class="modal fade" id="mean-window" role="dialog">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <h3 class="modal-title">Meaning Test</h3>
+    			</div>
+    			<div class="modal-body">
+    				<h2 class="origin-word">Rebel</h2>
+    				<div class="alert hide alert-success" id='remembered-hint' role="alert">Brilliant</div>
+    				<div class="alert hide alert-danget" id='remembered-error-hint' role="alert">Error</div>
+    				<div class="choice-area">
+    					<div class="mean-area">反叛；反叛者</div>
+    					<div class="explanation-area">opposing or taking arms against a government or ruler；a person who opposes or fights against a government.</div>
+    				</div>
+    			</div> <!-- div.modal-body -->
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-cancel cancel-button" data-dismiss="modal">Exit</button>
+                    <button type="button" class="btn ok-button" id="pass-mean-button">Next</button>
+                    <button type="button" class="btn ok-button" id="remembered-mean-button">Remembered</button>
+    			</div>
+    		</div> <!-- div.modal-content -->
+    	</div>
+    </div> <!-- div#mean-window -->
+	
+
+<script type="text/javascript">
+	function processGetReviewWord (result) {
+		var origin = result['origin'],
+		mean = result['mean'],
+		explanation = result['explanation'];
+		$('div#mean-window h2').html(origin);
+		$('div#mean-window div.mean-area').html(mean);
+		$('div#mean-window div.explanation-area').html(explanation);
+	}
+</script>
+<script type="text/javascript">
+	$('div#container a.start-review').click(function() {
+		getReviewWord()
+		$('div#mean-window').modal('show')
+	});
+</script>
+<script type="text/javascript">
+	function getReviewWord () {
+		$.ajax({
+			url: '/home/dayWord',
+			type: 'GET',
+			dataType: 'JSON',
+			success:function(result){
+				processGetReviewWord(result);
+			}
+		});
+	}
+</script>
+<script type="text/javascript">
+	$('div#mean-window button#pass-mean-button').click(function() {
+		getReviewWord();
+	});
+</script>
+<script type="text/javascript">
+	function processRemembered (result) {
+		if(result['isSuccessful']){
+			$("#remembered-hint").removeClass('hide')
+			$("#remembered-hint").show(200).delay(500).hide(200);
+		}else{
+			$("#remembered-error-hint").removeClass('hide')
+			$("#remembered-error-hint").show(200).delay(500).hide(200);
+		}
+		getReviewWord();
+	}
+</script>
+<script type="text/javascript">
+	$('div#mean-window button#remembered-mean-button').click(function() {
+		$.ajax({
+			url:'/home/remembered?word=' + $('div#mean-window h2').html(),
+			type:'GET',
+			dataType:'JSON',
+			success:function(result){
+				processRemembered(result);
+			}
+		});
+	});
+</script>
+</body>
+</html>

@@ -7,7 +7,7 @@ from django.template import RequestContext, loader
 from django.templatetags.static import static
 from django.views.decorators.csrf import csrf_exempt
 
-from words import saveNewWord, getRandomWord, getWords
+from words import saveNewWord, getRandomWord, getWords, getMeanTest,setWordRemembered
 
 from notes.models import Word
 
@@ -24,6 +24,30 @@ def dashboardView(request):
     })
     return HttpResponse(template.render(context))
 
+@csrf_exempt
+def testView(request):
+    if not isUserLogin(request):
+       return HttpResponseRedirect('/accounts/')
+    template = loader.get_template('notes/test.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+@csrf_exempt
+def reviewView(request):
+    if not isUserLogin(request):
+       return HttpResponseRedirect('/accounts/')
+    template = loader.get_template('notes/review.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
+
+@csrf_exempt
+def helpView(request):
+    template = loader.get_template('notes/help.html')
+    context = RequestContext(request, {
+    })
+    return HttpResponse(template.render(context))
 
 def isUserLogin(request):
     try:
@@ -48,14 +72,28 @@ def getWordOfDay(request):
     word_info = getRandomWord()
     return HttpResponse(json.dumps(word_info), content_type="application/json")
 
+@csrf_exempt
+def getMeanTestWords(request):
+    word_info = getMeanTest()
+    return HttpResponse(json.dumps(word_info), content_type="application/json")
+
 def getWordCount(request):
     username = request.session['username']
     count = Word.objects.filter(user_id=username).count()
     return count
 
 @csrf_exempt
+def wordRemembered(request):
+    origin = request.GET.get('word')
+    result = {
+        'isSuccessful': setWordRemembered(origin)
+    }
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+
+@csrf_exempt
 def getWordsByOffset(request):
     offset = request.GET.get('offset')
     username = request.session['username']
-    result = getWords(6, int(offset), username)
+    result = getWords(int(offset), username)
     return HttpResponse(json.dumps(result), content_type="application/json")

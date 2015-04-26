@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WordPaper</title>
+    <link rel="shortcut icon" href="/static/img/logo.png">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/help.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/gh.css" />
+    <!-- Java Script -->
+    <script type="text/javascript" src="/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<nav id="globalheader" class="globalheader" role="navigation" aria-label="Global Navigation">
+        <div id="gh-content" class="gh-content">
+            <ul class="gh-nav-list navbar-nav">
+                <li class="gh-tab gh-tab-logo">
+                    <a href="/" class="gh-tab-link">
+                        <div class="gh-logo"><img src="/static/img/WordLogo.png" alt="35x35" class="img-rounded" style="width: 35px;height: 35px;"></div>
+                    </a>
+                </li>
+                <li class="gh-tab gh-tab-note">
+                    <a href="/home/dashboard/" class="gh-tab-link">Note</a>
+                </li>
+                <li class="gh-tab gh-tab-test">
+                    <a href="#" class="gh-tab-link">Test</a>
+                </li>
+                <li class="gh-tab gh-tab-review">
+                    <a href="#" class="gh-tab-link">Review</a>
+                </li>
+                <li class="gh-tab gh-tab-help">
+                    <a href="#" class="gh-tab-link active-link">Help</a>
+                </li>
+                <li class="gh-tab gh-tab-person">
+	                <div id="menu" class="dropdown">
+	                    <a href="javascript:void(0)" class="gh-tab-link" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" id="person-menu-trigger"><span class="glyphicon glyphicon-user"></span></a>
+                    	<ul id="menu-items" class="dropdown-menu" role="menu" aria-labelledby="person-menu-trigger">
+                    		<li class="menu-item"><a class="item" href="javascript:void(0)"><span class="glyphicon glyphicon-cog"></span> Personal Settings </a></li>
+                    		<li class="menu-item"><a class="item" href="/accounts/logout"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
+                    	</ul>
+	                </div><!--div#menu -->
+                </li>
+            </ul> <!-- ul.gh-nav-list -->
+        </div> <!-- div#gh-content -->
+    </nav> <!-- nav#globalheader -->
+</body>
+</html>
