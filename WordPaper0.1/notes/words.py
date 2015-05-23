@@ -19,7 +19,7 @@ def saveNewWord(origin, mean, explanation, username):
     @return whether this word already exists
     """
   try:
-    word_obj = Word.objects.get(origin_word=origin)
+    word_obj = Word.objects.get(origin_word=origin, user_id=username)
     word_obj.count = word_obj.count + 1
     word_obj.level = calWordLevel(word_obj)
     word_obj.save()
@@ -34,6 +34,16 @@ def saveNewWord(origin, mean, explanation, username):
     new_word.save()
     return True
 
+def increaseWordCount(origin, username):
+    try:
+        word_obj = Word.objects.get(origin_word=origin, user_id=username)
+        word_obj.count += 1
+        word_obj.level = calWordLevel(word_obj)
+        word_obj.save()
+        return True
+    except:
+        return False
+
 
 def calWordLevel(word_obj):
   """
@@ -44,11 +54,11 @@ def calWordLevel(word_obj):
     @return the level for this word
     """
   current_count = word_obj.count
-  new_level = current_count / 4
+  new_level = current_count / 2
   return new_level
 
-def getRandomWord():
-    newWord = Word.objects.filter(is_remembered=False).order_by('?')[0]
+def getRandomWord(username):
+    newWord = Word.objects.filter(is_remembered=False, user_id=username).order_by('?')[0]
     result = {
         'origin': newWord.origin_word,
         'mean': newWord.mean,
@@ -56,8 +66,8 @@ def getRandomWord():
     }
     return result
 
-def getMeanTest():
-    newWord = Word.objects.order_by('?')[0:4]
+def getMeanTest(username):
+    newWord = Word.objects.filter(is_remembered=False, user_id=username).order_by('?').reverse()[0:4]
     correctAnswer = random.randint(0,3)
     word_info_list = list()
     for word_obj in newWord:
@@ -71,12 +81,11 @@ def getMeanTest():
         'words': word_info_list,
         'correct': correctAnswer
     }
-    print len(word_info_list)
     return result
 
-def setWordRemembered(origin):
+def setWordRemembered(origin, username):
     try:
-        word_obj = Word.objects.get(origin_word=origin)
+        word_obj = Word.objects.get(origin_word=origin,user_id=username)
         word_obj.is_remembered=True
         word_obj.save()
         return True
@@ -84,7 +93,7 @@ def setWordRemembered(origin):
         return False
 
 def getWords(offset, username):
-    word_list = Word.objects.filter(user_id=username).order_by('id')
+    word_list = Word.objects.filter(user_id=username).order_by('level', 'count').reverse()
     word_info_list = list()
     for word_obj in word_list:
         word_info = {

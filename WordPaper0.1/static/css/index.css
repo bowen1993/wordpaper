@@ -120,23 +120,7 @@ button.ok-button{
 	-webkit-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
 	-webkit-user-select: none;
 }
-button.cancel-button{
-	color:#333333;
-}
-button.ok-button{
-	color:#0080FF;
-	font-size: 1.3em
-}
 
-button.cancel-button:hover{
-	color:#191919;
-	font-weight: bolder;
-}
-
-button.ok-button:hover{
-	color:#0000FF;
-	font-weight: bolder;
-}
 
 div#register-window{
 	margin-top: 10em;

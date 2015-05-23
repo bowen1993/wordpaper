@@ -7,7 +7,7 @@ from django.template import RequestContext, loader
 from django.templatetags.static import static
 from django.views.decorators.csrf import csrf_exempt
 
-from words import saveNewWord, getRandomWord, getWords, getMeanTest,setWordRemembered
+from words import saveNewWord, getRandomWord, getWords, getMeanTest,setWordRemembered,increaseWordCount
 
 from notes.models import Word
 
@@ -69,12 +69,14 @@ def addWordAction(request):
 
 @csrf_exempt
 def getWordOfDay(request):
-    word_info = getRandomWord()
+    username = request.session['username']
+    word_info = getRandomWord(username)
     return HttpResponse(json.dumps(word_info), content_type="application/json")
 
 @csrf_exempt
 def getMeanTestWords(request):
-    word_info = getMeanTest()
+    username = request.session['username']
+    word_info = getMeanTest(username)
     return HttpResponse(json.dumps(word_info), content_type="application/json")
 
 def getWordCount(request):
@@ -85,11 +87,22 @@ def getWordCount(request):
 @csrf_exempt
 def wordRemembered(request):
     origin = request.GET.get('word')
+    username = request.session['username']
     result = {
-        'isSuccessful': setWordRemembered(origin)
+        'isSuccessful': setWordRemembered(origin, username)
     }
     return HttpResponse(json.dumps(result), content_type="application/json")
 
+@csrf_exempt
+def increaseCountAction(request):
+    origin = request.GET.get('word')
+    print origin
+    username = request.session['username']
+
+    result = {
+        'isSuccessful': increaseWordCount(origin, username)
+    }
+    return HttpResponse(json.dumps(result), content_type="application/json")
 
 @csrf_exempt
 def getWordsByOffset(request):

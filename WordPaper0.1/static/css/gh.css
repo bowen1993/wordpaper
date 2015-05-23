@@ -3,7 +3,7 @@ nav#globalheader{
 	width:100%;
 	height:3.3em;
 	background: rgba(0,0,0,0.6);
-	margin: 0 auto 1em;
+	margin: 0 auto 0em;
 	font-size:18px;
 	display: block;
 }

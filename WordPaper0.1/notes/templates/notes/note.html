@@ -32,13 +32,13 @@
                     <a href="/home/review/" class="gh-tab-link">Review</a>
                 </li>
                 <li class="gh-tab gh-tab-help">
-                    <a href="#" class="gh-tab-link">Help</a>
+                    <a href="/home/help/" class="gh-tab-link">Help</a>
                 </li>
                 <li class="gh-tab gh-tab-person">
 	                <div id="menu" class="dropdown">
 	                    <a href="javascript:void(0)" class="gh-tab-link" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" id="person-menu-trigger"><span class="glyphicon glyphicon-user"></span></a>
                     	<ul id="menu-items" class="dropdown-menu" role="menu" aria-labelledby="person-menu-trigger">
-                    		<li class="menu-item"><a class="item" href="javascript:void(0)"><span class="glyphicon glyphicon-cog"></span> Personal Settings </a></li>
+                    		
                     		<li class="menu-item"><a class="item" href="/accounts/logout"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
                     	</ul>
 	                </div><!--div#menu -->
@@ -65,7 +65,7 @@
     	<div class="alert alert-warning hide" id='added-hint' role="alert"></div>
     		<div class="word-mean">
 	    		<input type="text" class="input-word-mean form-control" id="word" placeholder="Word"/>
-	    		<input type="text" class="input-word-mean form-control" id="mean" placeholder="Mean"/>
+	    		<input type="text" class="input-word-mean form-control" id="mean" placeholder="Meaning"/>
     		</div>
     		<div class="explanation">
     			<input type="text" class="input-explanation form-control" id="explanation" placeholder="Explanation" />
@@ -150,7 +150,7 @@
     	var flag = 0;
 
     	for (var i = 0; i < words.length; i++){
-    		newRow.innerHTML += getWordHTML(words[i]['origin'], words[i]['mean'], words[i]['explanation'], words[i]['is_remembered'])
+    		newRow.innerHTML += getWordHTML(words[i]['origin'], words[i]['mean'], words[i]['explanation'], words[i]['is_remembered'], words[i]['level'])
     		flag = 0
     	}
     	$('div#noted-words').append(newRow)
@@ -158,13 +158,21 @@
     }
     </script>
     <script type="text/javascript">
-    function getWordHTML (origin, mean, explanation, r) {
+    function getWordHTML (origin, mean, explanation, r, level) {
         rStr = ''
+        lStr = ''
         if (r){
             rStr += 'remembered'
         }
+        if (level > 0 && level <= 2){
+            lStr += 'level-1'
+        } else if (level > 2 && level <= 4){
+            lStr += 'level-2'
+        } else if(level > 4){
+            lStr += 'high-level'
+        }
     	return 	'<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">'+
-    			'<div class="word-pad '+rStr+'">'+
+    			'<div class="word-pad '+rStr+' '+lStr+'">'+
     			'<button class="noteword" id="'+origin+'" onclick=javascript:showWordCard(this) ' +
 		    	'data-toggle="tooltip" mean="'+mean+'" data-placement="right" ' +
 		    	'explanation="'+explanation+'" title="'+explanation+'">'+origin+'</button>' +
@@ -228,7 +236,7 @@
     </script>
     <script type="text/javascript">
     function addAWord (origin, mean, explanation) {
-        $('div#noted-words row').append(getWordHTML(origin, mean, explanation))
+        $('div#noted-words row').append(getWordHTML(origin, mean, explanation, 0))
         window.offset += 1
     }
     </script>

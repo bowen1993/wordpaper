@@ -15,4 +15,5 @@ urlpatterns = patterns('',
     url(r'^help/', views.helpView),
     url(r'^meanTest', views.getMeanTestWords),
     url(r'^remembered', views.wordRemembered),
+    url(r'^increase', views.increaseCountAction),
 )

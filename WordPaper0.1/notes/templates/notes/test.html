@@ -32,13 +32,13 @@
                     <a href="/home/review/" class="gh-tab-link">Review</a>
                 </li>
                 <li class="gh-tab gh-tab-help">
-                    <a href="#" class="gh-tab-link">Help</a>
+                    <a href="/home/help/" class="gh-tab-link">Help</a>
                 </li>
                 <li class="gh-tab gh-tab-person">
 	                <div id="menu" class="dropdown">
 	                    <a href="javascript:void(0)" class="gh-tab-link" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" id="person-menu-trigger"><span class="glyphicon glyphicon-user"></span></a>
                     	<ul id="menu-items" class="dropdown-menu" role="menu" aria-labelledby="person-menu-trigger">
-                    		<li class="menu-item"><a class="item" href="javascript:void(0)"><span class="glyphicon glyphicon-cog"></span> Personal Settings </a></li>
+                    		
                     		<li class="menu-item"><a class="item" href="/accounts/logout"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
                     	</ul>
 	                </div><!--div#menu -->
@@ -206,10 +206,22 @@ function processGetMeanWords (result) {
 			showNextSpellWord();
 		}else{
 			$("#spell-wrong-hint").removeClass('hide');
+			increaseCount(window.spell_answer);
 			$("#spell-wrong-hint").html("Wrong! Answer is " + window.spell_answer).show(300).delay(2000).hide(300);
 			showNextSpellWord();
 		}	
 	});
+</script>
+<script type="text/javascript">
+	function increaseCount (origin) {
+		$.ajax({
+			url:'/home/increase?word='+origin,
+			type:'GET',
+			dataType:'JSON',
+			success:function(result){
+			}
+		});
+	}
 </script>
 <script type="text/javascript">
 	$('a.mean-choice').click(function(event) {
@@ -219,6 +231,7 @@ function processGetMeanWords (result) {
 			showNextMeanWord();
 		}else{
 			$("#answer-wrong-hint").removeClass('hide');
+			increaseCount($('div#mean-window h2.origin-word').html())
 			$("#answer-wrong-hint").html("Wrong!The correct answer is "+window.mean_answer).show(300).delay(2000).hide(300);
 			showNextMeanWord();
 		}

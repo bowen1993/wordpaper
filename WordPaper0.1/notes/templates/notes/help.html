@@ -26,10 +26,10 @@
                     <a href="/home/dashboard/" class="gh-tab-link">Note</a>
                 </li>
                 <li class="gh-tab gh-tab-test">
-                    <a href="#" class="gh-tab-link">Test</a>
+                    <a href="/home/test/" class="gh-tab-link">Test</a>
                 </li>
                 <li class="gh-tab gh-tab-review">
-                    <a href="#" class="gh-tab-link">Review</a>
+                    <a href="/home/review/" class="gh-tab-link">Review</a>
                 </li>
                 <li class="gh-tab gh-tab-help">
                     <a href="#" class="gh-tab-link active-link">Help</a>
@@ -38,7 +38,7 @@
 	                <div id="menu" class="dropdown">
 	                    <a href="javascript:void(0)" class="gh-tab-link" data-target="#" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false" id="person-menu-trigger"><span class="glyphicon glyphicon-user"></span></a>
                     	<ul id="menu-items" class="dropdown-menu" role="menu" aria-labelledby="person-menu-trigger">
-                    		<li class="menu-item"><a class="item" href="javascript:void(0)"><span class="glyphicon glyphicon-cog"></span> Personal Settings </a></li>
+                    		
                     		<li class="menu-item"><a class="item" href="/accounts/logout"><span class="glyphicon glyphicon-off"></span> Logout </a></li>
                     	</ul>
 	                </div><!--div#menu -->
@@ -46,5 +46,46 @@
             </ul> <!-- ul.gh-nav-list -->
         </div> <!-- div#gh-content -->
     </nav> <!-- nav#globalheader -->
+    <div id="help_container">
+        <div id="question" role="tabpanel">
+            <ul class="nav nav-pills nav-stacked list" role = "tablist">
+                <li role="presentation" class="active questionItem">
+                    <a href="#answer1" aria-controls="answer1" role="tab" data-toggle="tab">How to return to the home page?</a>
+                </li>
+                <li role="presentation" class="questionItem">
+                    <a href="#answer2" aria-controls="answer2" role="tab" data-toggle="tab">The "Test" item doesn't response to a click?</a>
+                </li>
+                <li role="presentation" class="questionItem">
+                    <a href="#answer3" aria-controls="answer3" role="tab" data-toggle="tab">How can I change my password?</a>
+                </li>
+                <li role="presentation" class="questionItem">
+                    <a href="#answer4" aria-controls="answer4" role="tab" data-toggle="tab">Why do I only see a few words that I have stored?</a>
+                </li>
+            </ul>
+        </div><!-- list of question -->
+        <!-- Tab panes -->
+        <div class="tab-content answer">
+            <div id="answer1" class="tab-pane active" role="tabpanel">
+                <p class="answerTitleContent">Answer</p>
+                <p class="answerContent">you can click the logo of WordPaper system.</p>
+                <p class="answerContent">you also can click the icon which looks like a head portrait,and then you only need to click the logout button.</p>
+                <p class="answerContent">according to the above operation, you can return to home page successfully.</p>
+            </div><!-- show the content of answer -->
+            <div id="answer2" class="tab-pane" role="tabpanel">
+                <p class="answerTitleContent">Answer</p>
+                <p class="answerContent">This is because you didn't log in. if you don't have an account yet,you can click the register on home page,then fill out your personal information and save it.After that you'll hava your own account.</p>
+            </div><!-- show the content of answer -->
+            <div id="answer3" class="tab-pane" role="tabpanel">
+                <p class="answerTitleContent">Answer</p>
+                <p class="answerContent">After you Log in, you can click the icon which looks like a head portrait,and then you only need to click the "Personal Settings" item,in this function,you can achieve your goal.</p>
+            </div><!-- show the content of answer -->
+            <div id="answer4" class="tab-pane" role="tabpanel">
+                <p class="answerTitleContent">Answer</p>
+                <p class="answerContent">First our system have stored all words you put in. the reason for this problem is:
+                our system display only a part of your words once,if you want to look up other words,you can use the left turn 
+                button or right turn button which is locates at the bottom of the Note Page.</p>
+            </div><!-- show the content of answer -->
+        </div>
+    </div><!-- contain the content of the help.html>
 </body>
 </html>
